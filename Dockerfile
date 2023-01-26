@@ -1,0 +1,17 @@
+FROM node:hydrogen-buster 
+
+LABEL maintainer="Hoplin"
+LABEL email="jhoplin7259@gmail.com"
+
+RUN apt-get update\
+    && apt-get upgrade -y\
+    && mkdir api
+WORKDIR /api
+
+COPY . .
+RUN rm -rf node_modules\
+    && npm i
+EXPOSE 4000
+
+CMD [ "-c","npx sequelize db:create && node app.js" ]
+ENTRYPOINT [ "/bin/bash" ]

@@ -1,0 +1,52 @@
+{
+  "name": "hongik-univ-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --coverage",
+    "service": "docker compose up -d",
+    "service-down": "docker compose down && docker rmi hongikapi",
+    "dev": "cd dev-docker && docker-compose up -d && clear && docker exec -it dev-docker-api-1 bash",
+    "dev-bash": "docker exec -it dev-docker-api-1 bash",
+    "dev-down": "cd dev-docker && docker compose down && docker rmi hongikapi-dev-container",
+    "dev-run": "cross-env PORT=6000 nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/J-hoplin1/Hongik-Univ-API.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/J-hoplin1/Hongik-Univ-API/issues"
+  },
+  "homepage": "https://github.com/J-hoplin1/Hongik-Univ-API#readme",
+  "dependencies": {
+    "axios": "^1.2.3",
+    "bcrypt": "^5.1.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.7.0",
+    "mongoose": "^6.8.4",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.0.1",
+    "redis": "^4.5.1",
+    "sequelize": "^6.28.0",
+    "sequelize-cli": "^6.5.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.0",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.4.0",
+    "eslint": "^8.32.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "jest": "^29.3.1",
+    "nodemon": "^2.0.20",
+    "supertest": "^6.3.3"
+  }
+}
