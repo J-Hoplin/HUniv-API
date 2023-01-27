@@ -12,6 +12,7 @@ dotenv.config({
 const { sequelize } = require('./models');
 // load redis module to be cached in require.cached
 const redis = require('./redis');
+
 // Swagger
 const { swaggerUI, specs } = require('./docs');
 
@@ -25,8 +26,8 @@ sequelize.sync({ force: false })
     });
 
 const app = express();
-app.set('port', process.env.PORT || 4000);
 
+app.set('port', process.env.PORT || 4000);
 app.use(
     express.json(),
     express.urlencoded({
@@ -52,7 +53,4 @@ app.use((err, req, res, next) => {
     );
 });
 
-app.listen(app.get('port'), () => {
-    console.log(`Listening on port ${app.get('port')}`);
-});
 module.exports = app;

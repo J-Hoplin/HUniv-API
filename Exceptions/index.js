@@ -12,6 +12,12 @@ exports.AxiosError = class AxiosRequestError extends Error {
 
 exports.InstanceNotInitiated = class InstanceNotInitiated extends Error {
     constructor() {
-        super("Instance not initaited. Please call init() for instance initation")
+        super('Instance not initaited. Please call init() for instance initation');
     }
-}
+};
+
+exports.OffsetUnitMultiple = class OffsetUnitMultiple extends Error {
+    constructor(unit) {
+        super(`Offset should be multiple of ${unit}`)
+    }
+};

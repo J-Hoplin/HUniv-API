@@ -10,7 +10,7 @@
     "dev": "cd dev-docker && docker-compose up -d && clear && docker exec -it dev-docker-api-1 bash",
     "dev-bash": "docker exec -it dev-docker-api-1 bash",
     "dev-down": "cd dev-docker && docker compose down && docker rmi hongikapi-dev-container",
-    "dev-run": "cross-env PORT=6000 nodemon app.js"
+    "dev-run": "cross-env PORT=6000 nodemon www.js"
   },
   "repository": {
     "type": "git",
@@ -34,11 +34,13 @@
     "mongoose": "^6.8.4",
     "morgan": "^1.10.0",
     "mysql2": "^3.0.1",
+    "node-schedule": "^2.1.1",
     "redis": "^4.5.1",
     "sequelize": "^6.28.0",
     "sequelize-cli": "^6.5.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.0",
+    "uuid": "^9.0.0",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
