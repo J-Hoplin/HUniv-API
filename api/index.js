@@ -5,6 +5,7 @@ const router = Router();
 
 const v1 = require('./v1');
 
+// api health check
 router.get('/health', (req, res) => res.status(Code.OK.httpCode).json(
     Code.messageCommon(Code.OK),
 ));

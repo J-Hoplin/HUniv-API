@@ -10,14 +10,20 @@ exports.AxiosError = class AxiosRequestError extends Error {
     }
 };
 
-exports.InstanceNotInitiated = class InstanceNotInitiated extends Error {
-    constructor() {
-        super('Instance not initaited. Please call init() for instance initation');
+exports.OffsetUnitMultiple = class OffsetUnitMultiple extends Error {
+    constructor(unit) {
+        super(`Offset should be multiple of ${unit}`);
     }
 };
 
-exports.OffsetUnitMultiple = class OffsetUnitMultiple extends Error {
-    constructor(unit) {
-        super(`Offset should be multiple of ${unit}`)
+exports.InvalidNoticeType = class InvalidNoticeType extends Error {
+    constructor(value) {
+        super(`Invalid notice type ${value}`);
+    }
+};
+
+exports.InvalidNoticeNumber = class InvalidNoticeNumber extends Error {
+    constructor(value) {
+        super(`Invalid notice number '${value}'`);
     }
 };

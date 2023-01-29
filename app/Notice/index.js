@@ -1,7 +1,7 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-const set = require('./sets');
-const { KeynotExist, InstanceNotInitiated, OffsetUnitMultiple } = require('../../Exceptions');
+const set = require('./sets.json');
+const { InvalidNoticeType, InvalidNoticeNumber, OffsetUnitMultiple } = require('../../Exceptions');
 
 /**
  *
@@ -16,38 +16,39 @@ const { KeynotExist, InstanceNotInitiated, OffsetUnitMultiple } = require('../..
 class Notice {
     static #HONGIK_BASE_URL = 'https://www.hongik.ac.kr';
 
-    static #HONGIK_PAGINATION = 10;
+    static #HONGIK_PAGINATION = process.env.DEFAULT_PAGINATION || 10;
 
     constructor(type) {
         this.type = type;
-        this.currentNumber = undefined;
-        this.totalPage = undefined;
     }
 
-    async init() {
-        try {
-            const firstPage = await this.getPageFilteredValue();
-            const currentNumber = parseInt(firstPage[0][0], 10);
-            // ID of latest notice
-            this.currentNumber = currentNumber;
-            // Total page of board
-            this.totalPage = parseInt(currentNumber / Notice.#HONGIK_PAGINATION, 10) + 1;
-        } catch (err) {
-            console.error(err.message);
-        }
+    async getCurrentNoticeNumber() {
+        return parseInt((await this.getPageFilteredValue())[0][0], 10);
     }
 
-    checkInstanceInitiated() {
-        if (!(this.currentNumber !== undefined && this.totalPage !== undefined)) {
-            throw new InstanceNotInitiated();
+    async getTotalPageNumber() {
+        // Get notice current notice's number
+        const currentNumber = await this.getCurrentNoticeNumber();
+
+        // Get notice total page length
+        return currentNumber % Notice.#HONGIK_PAGINATION
+            ? parseInt(currentNumber / Notice.#HONGIK_PAGINATION, 10) + 1
+            : parseInt(currentNumber / Notice.#HONGIK_PAGINATION, 10);
+    }
+
+    async searchByNoticeNumber(number) {
+        if (number <= 0) {
+            throw InvalidNoticeNumber(number);
         }
-        return true;
+        const currentNumber = await this.getCurrentNoticeNumber();
+        const targetPage = parseInt((currentNumber - number) / 10, 10) + 1;
+        return (await this.getPageFilteredValue(targetPage)).filter((x) => x[0] === number);
     }
 
     async getPageFilteredValue(pagenum = 1, type = this.type) {
         const url = `https://www.hongik.ac.kr/front/boardlist.do?currentPage=${pagenum}&menuGubun=1&siteGubun=1&bbsConfigFK=${set[type].id}&searchField=ALL&searchValue=&searchLowItem=ALL`;
         if (!Object.keys(set).includes(type)) {
-            throw new KeynotExist(type);
+            throw new InvalidNoticeType(type);
         }
         let html;
         try {
@@ -104,7 +105,6 @@ class Notice {
             ? parseInt((offset + limit) / Notice.#HONGIK_PAGINATION, 10) + 1
             : parseInt((offset + limit) / Notice.#HONGIK_PAGINATION, 10);
 
-        console.log(`${startpage} ${endpage}`);
         let result = [];
         // eslint-disable-next-line no-restricted-syntax
         for (const i of Array.from(
@@ -119,11 +119,11 @@ class Notice {
                 result = result.concat(page);
             }
         }
-        console.log(result.length);
         return result;
     }
 
     async scanWholeBoardList() {
+        const totalPage = await this.getTotalPageNumber();
         /**
          * Yet Array.prototype.flat() is not optimized
          * https://stackoverflow.com/questions/61411776/is-js-native-array-flat-slow-for-depth-1
@@ -131,7 +131,7 @@ class Notice {
         this.checkInstanceInitiated();
         // Array for result
         let result = [];
-        (await Promise.allSettled(Array.from({ length: this.totalPage }, (_, i) => i + 1)
+        (await Promise.allSettled(Array.from({ length: totalPage }, (_, i) => i + 1)
             .map((x) => this.getPageFilteredValue(x))))
             .filter((x) => {
                 const { status } = x;
@@ -145,10 +145,6 @@ class Notice {
 }
 
 module.exports = {
-    NoticeScrapper: async (type) => {
-        const instance = new Notice(type);
-        await instance.init();
-        return instance;
-    },
+    Notice,
     set,
 };

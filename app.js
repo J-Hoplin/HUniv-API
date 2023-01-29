@@ -2,12 +2,16 @@ const express = require('express');
 const logger = require('morgan');
 const dotenv = require('dotenv');
 const Code = require('./Code');
-// Routers
-const api = require('./api');
 
 dotenv.config({
     path: './config/.env',
 });
+
+// Scraper instance
+const { Notice, set } = require('./app/Notice');
+
+// Routers
+const api = require('./api');
 
 const { sequelize } = require('./models');
 // load redis module to be cached in require.cached
@@ -26,6 +30,13 @@ sequelize.sync({ force: false })
     });
 
 const app = express();
+
+// Initiate scraper instance
+Object.keys(set).map((i) => {
+    console.log(`Instance of scraper : ${i} ready`);
+    app.set(`scraper_${i}`, new Notice(i));
+    return i;
+});
 
 app.set('port', process.env.PORT || 4000);
 app.use(
@@ -47,6 +58,7 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
+    console.log(err);
     const format = Code.buildFormat(err.msg || 'Error', err.code || 500, err.code || 500);
     return res.status(format.httpCode).json(
         Code.messageCommon(format),
