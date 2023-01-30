@@ -1,17 +1,19 @@
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
 
+const v1 = require('./v1');
+
 const option = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'Board API',
+            title: 'Hongik University API',
             version: '1.0',
-            description: 'Board api using express.js',
+            description: '3rd party Hongik University API',
             contact: {
                 name: 'J-hoplin1',
                 email: 'jhoplin7259@gmail.com',
-                url: 'https://github.com/J-hoplin1/Board-API',
+                url: 'https://github.com/J-hoplin1/HUniv-API',
             },
         },
         servers: [
@@ -114,12 +116,12 @@ const option = {
                         },
                     },
                 },
-                '400-user-level-range-unavailable': {
+                '400-invalid-notice-number': {
                     type: 'object',
                     properties: {
                         msg: {
                             type: 'string',
-                            example: 'User level range unavailable',
+                            example: 'Invalid notice number {value}',
                         },
                     },
                 },
@@ -150,12 +152,12 @@ const option = {
                         },
                     },
                 },
-                '400-post-not-exist': {
+                '400-invalid-post-type': {
                     type: 'object',
                     properties: {
                         msg: {
                             type: 'string',
-                            example: 'Post not exist',
+                            example: 'Invalid notice type {value}',
                         },
                     },
                 },
@@ -197,13 +199,21 @@ const option = {
                 },
             },
         },
-        security: [
+        tags: [
             {
-                bearerAuth: [],
+                name: '/api',
+                description: 'API health check',
+            },
+            {
+                name: '/api/v1/notice',
+                description: 'Notice API',
             },
         ],
+        paths: {
+            ...v1,
+        },
     },
-    apis: ['../api/*.js', './index.js'],
+    apis: ['../api/v1/Notice/index.js', './index.js'],
 };
 
 const specs = swaggerJsDoc(option);

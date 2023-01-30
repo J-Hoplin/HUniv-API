@@ -8,6 +8,15 @@ const resultFieldMapper = (result) => {
     }, {}));
 };
 
+exports.checkInstanceAvailable = async (req, res, next) => {
+    if (!req.instance) {
+        return res.status(Codes.NOTICE_INVALID_TYPE.httpCode).json(
+            Codes.messageCommon(Codes.NOTICE_INVALID_TYPE),
+        );
+    }
+    return next();
+};
+
 exports.getNoticeByTypeList = async (req, res, next) => {
     try {
         let {
@@ -38,6 +47,11 @@ exports.getNoticeByTypeNumber = async (req, res, next) => {
             instance,
         } = req;
         const result = resultFieldMapper(await instance.searchByNoticeNumber(number));
+        if (result.length <= 0) {
+            return res.status(Codes.NOTICE_UNABLE_TO_FIND.httpCode).json(
+                Codes.messageCommon(Codes.NOTICE_UNABLE_TO_FIND),
+            );
+        }
         return res.status(Codes.OK.httpCode).json(
             Codes.messageWithData(Codes.OK, result),
         );
