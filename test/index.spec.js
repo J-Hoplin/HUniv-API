@@ -1,11 +1,7 @@
 const request = require('supertest');
-const dotenv = require('dotenv');
 const Code = require('../Code');
 const app = require('../app');
 
-dotenv.config({
-    path: '../config/.env',
-});
 const { sequelize } = require('../models');
 
 beforeAll(async () => {
