@@ -34,7 +34,7 @@ exports.API_UNAUTHORIZED = format('Unauthorized', 401, 401);
 
 // token apiCode : 1000
 exports.JWT_EXPIRED = format('token expired', 1000, 419);
-exports.INVALID_TOKEN = format('invalid token', 1001, 419);
+exports.JWT_INVALID_TOKEN = format('invalid token', 1001, 419);
 // Notice API
 exports.NOTICE_INVALID_TYPE = format('Invalid notice type', 1100, 400);
 exports.NOTICE_UNABLE_TO_FIND = format('Unable to find notice', 1101, 400);
