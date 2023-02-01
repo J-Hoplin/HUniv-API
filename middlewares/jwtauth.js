@@ -76,6 +76,9 @@ exports.refreshTokenPreprocess = async (req, res, next) => {
             const payload = jwt.verify(
                 req.headers.authorization.split(' ')[1],
                 process.env.JWT_SECRET,
+                {
+                    ignoreExpiration: true,
+                },
             );
             const refreshToken = await redis.get(payload.id);
             req.refresh = {
@@ -119,8 +122,9 @@ exports.refreshTokenRegenrate = async (req, res, next) => {
                 issuer: process.env.JWT_ISSUER,
             },
         );
+        console.log(authToken);
         return res.status(Codes.OK.httpCode).json(
-            Codes.messageCommon(Codes.OK, authToken),
+            Codes.messageWithToken(Codes.OK, authToken),
         );
     } catch (err) {
         // If refresh token's state is unable to verify
