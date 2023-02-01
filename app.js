@@ -14,8 +14,6 @@ const { Notice, set } = require('./app/Notice');
 const api = require('./api');
 
 const { sequelize } = require('./models');
-// load redis module to be cached in require.cached
-const redis = require('./redis');
 
 // Swagger
 const { swaggerUI, specs } = require('./docs');
