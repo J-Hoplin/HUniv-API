@@ -57,7 +57,8 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
     console.log(err);
-    const format = Code.buildFormat(err.msg || 'Error', err.code || 500, err.code || 500);
+    console.log(err.code);
+    const format = Code.buildFormat(err.message || 'Error', err.apiCode || 500, err.code || 500);
     return res.status(format.httpCode).json(
         Code.messageCommon(format),
     );

@@ -1,4 +1,7 @@
 const Notice = require('./Notice');
+const Auth = require('./Auth');
 
-console.log(Notice);
-module.exports = { ...Notice };
+module.exports = {
+    ...Notice,
+    ...Auth,
+};

@@ -1,4 +1,5 @@
 const Codes = require('../../../Code');
+const redis = require('../../../redis');
 
 const resultFieldMapper = (result) => {
     const fields = ['no', 'title', 'author', 'atts', 'createdAt', 'views', 'type'];
@@ -30,6 +31,11 @@ exports.getNoticeByTypeList = async (req, res, next) => {
         offset = parseInt(offset, 10) * process.env.DEFAULT_PAGINATION
             || process.env.DEFAULT_OFFSET * process.env.DEFAULT_PAGINATION;
         const result = resultFieldMapper(await instance.getByLimitOffset(offset, limit));
+        await redis.setEx(
+            req.originalUrl,
+            parseInt(process.env.CACHE_EXPIRE_TIME, 10),
+            JSON.stringify(result),
+        );
         return res.status(Codes.OK.httpCode).json(
             Codes.messageWithData(Codes.OK, result),
         );
@@ -52,6 +58,11 @@ exports.getNoticeByTypeNumber = async (req, res, next) => {
                 Codes.messageCommon(Codes.NOTICE_UNABLE_TO_FIND),
             );
         }
+        await redis.setEx(
+            req.originalUrl,
+            parseInt(process.env.CACHE_EXPIRE_TIME, 10),
+            JSON.stringify(result),
+        );
         return res.status(Codes.OK.httpCode).json(
             Codes.messageWithData(Codes.OK, result),
         );

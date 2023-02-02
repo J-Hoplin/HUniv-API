@@ -1,7 +1,7 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const set = require('./sets.json');
-const { InvalidNoticeType, InvalidNoticeNumber, OffsetUnitMultiple } = require('../../Exceptions');
+const { InvalidNoticeType, InvalidNoticeNumber, OffsetUnitMultiple } = require('../../Exceptions').app.Notice;
 
 /**
  *

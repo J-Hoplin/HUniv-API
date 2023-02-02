@@ -1,10 +1,14 @@
 const { Router } = require('express');
 const component = require('./component');
+const {
+  cacheHit,
+} = require('../../../middlewares');
 
 const router = Router();
 
 router.get(
   '/:type',
+  cacheHit,
   (req, res, next) => {
     try {
       const {
@@ -22,6 +26,7 @@ router.get(
 
 router.get(
   '/:type/:number',
+  cacheHit,
   (req, res, next) => {
     try {
       const {
