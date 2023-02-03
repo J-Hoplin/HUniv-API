@@ -18,6 +18,37 @@ exports.checkInstanceAvailable = async (req, res, next) => {
     return next();
 };
 
+exports.getTypeInstance = (req, res, next) => {
+    try {
+        const {
+            type,
+        } = req.params;
+        req.instance = req.app.get(`scraper_${type}`);
+        return next();
+    } catch (err) {
+        return next(err);
+    }
+};
+
+exports.getNoticeByTypeListAll = async (req, res, next) => {
+    try {
+        const {
+            instance,
+        } = req;
+        const result = resultFieldMapper(await instance.scanWholeBoardList());
+        await redis.setEx(
+            req.originalUrl,
+            parseInt(process.env.CACHE_EXPIRE_TIME, 10),
+            JSON.stringify(result),
+        );
+        return res.status(Codes.OK.httpCode).json(
+            Codes.messageWithData(Codes.OK, result),
+        );
+    } catch (err) {
+        return next(err);
+    }
+};
+
 exports.getNoticeByTypeList = async (req, res, next) => {
     try {
         let {

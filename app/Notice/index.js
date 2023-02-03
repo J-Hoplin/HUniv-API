@@ -128,7 +128,6 @@ class Notice {
          * Yet Array.prototype.flat() is not optimized
          * https://stackoverflow.com/questions/61411776/is-js-native-array-flat-slow-for-depth-1
          */
-        this.checkInstanceInitiated();
         // Array for result
         let result = [];
         (await Promise.allSettled(Array.from({ length: totalPage }, (_, i) => i + 1)

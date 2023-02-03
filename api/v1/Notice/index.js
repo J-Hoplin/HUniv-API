@@ -9,35 +9,23 @@ const router = Router();
 router.get(
   '/:type',
   cacheHit,
-  (req, res, next) => {
-    try {
-      const {
-        type,
-      } = req.params;
-      req.instance = req.app.get(`scraper_${type}`);
-      next();
-    } catch (err) {
-      next(err);
-    }
-  },
+  component.getTypeInstance,
   component.checkInstanceAvailable,
   component.getNoticeByTypeList,
 );
 
 router.get(
+  '/:type/all',
+  cacheHit,
+  component.getTypeInstance,
+  component.checkInstanceAvailable,
+  component.getNoticeByTypeListAll,
+);
+
+router.get(
   '/:type/:number',
   cacheHit,
-  (req, res, next) => {
-    try {
-      const {
-        type,
-      } = req.params;
-      req.instance = req.app.get(`scraper_${type}`);
-      next();
-    } catch (err) {
-      next(err);
-    }
-  },
+  component.getTypeInstance,
   component.checkInstanceAvailable,
   component.getNoticeByTypeNumber,
 );
