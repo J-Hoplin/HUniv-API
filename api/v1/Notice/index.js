@@ -1,38 +1,31 @@
 const { Router } = require('express');
 const component = require('./component');
+const {
+  cacheHit,
+} = require('../../../middlewares');
 
 const router = Router();
 
 router.get(
   '/:type',
-  (req, res, next) => {
-    try {
-      const {
-        type,
-      } = req.params;
-      req.instance = req.app.get(`scraper_${type}`);
-      next();
-    } catch (err) {
-      next(err);
-    }
-  },
+  cacheHit,
+  component.getTypeInstance,
   component.checkInstanceAvailable,
   component.getNoticeByTypeList,
 );
 
 router.get(
+  '/:type/all',
+  cacheHit,
+  component.getTypeInstance,
+  component.checkInstanceAvailable,
+  component.getNoticeByTypeListAll,
+);
+
+router.get(
   '/:type/:number',
-  (req, res, next) => {
-    try {
-      const {
-        type,
-      } = req.params;
-      req.instance = req.app.get(`scraper_${type}`);
-      next();
-    } catch (err) {
-      next(err);
-    }
-  },
+  cacheHit,
+  component.getTypeInstance,
   component.checkInstanceAvailable,
   component.getNoticeByTypeNumber,
 );

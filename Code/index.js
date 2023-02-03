@@ -33,8 +33,15 @@ exports.API_DEPRECATED = format('API Deprecated', 410, 410);
 exports.API_UNAUTHORIZED = format('Unauthorized', 401, 401);
 
 // token apiCode : 1000
-exports.JWT_EXPIRED = format('token expired', 1000, 419);
+exports.JWT_EXPIRED = format('Token expired', 1000, 419);
 exports.JWT_INVALID_TOKEN = format('invalid token', 1001, 419);
+exports.JWT_TOKEN_NOT_FOUND = format('JWT token not found', 1002, 401);
+
 // Notice API
 exports.NOTICE_INVALID_TYPE = format('Invalid notice type', 1100, 400);
 exports.NOTICE_UNABLE_TO_FIND = format('Unable to find notice', 1101, 400);
+
+// User Auth API
+exports.USER_EMAIL_ALREADY_EXIST = format('User email already exist', 1200, 400);
+exports.USER_NICKNAME_ALREADY_EXIST = format('User nickname already exist', 1201, 400);
+exports.USER_NICKNAME_OR_EMAIL_ALREADY_EXIST = format('User nickname or email already exist', 1202, 400);

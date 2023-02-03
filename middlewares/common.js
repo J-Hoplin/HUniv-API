@@ -2,12 +2,14 @@ const redis = require('../redis');
 const Code = require('../Code');
 
 // Cache Checking
-exports.cacheChecking = async (req, res, next) => {
+exports.cacheHit = async (req, res, next) => {
     try {
-        const search = await redis.get(req.url);
+        const search = await redis.get(req.originalUrl);
         if (search) {
             return res.status(Code.OK.httpCode).json(
-                Code.messageCommon(Code.OK),
+                // Convert stringfied json to JS object
+                // To save Object to redis, require to stringfy object
+                Code.messageWithData(Code.OK, JSON.parse(search)),
             );
         }
         return next();

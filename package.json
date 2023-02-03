@@ -4,13 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --coverage --silent",
+    "test": "jest --coverage",
     "service": "docker compose up -d",
     "service-down": "docker compose down && docker rmi hongikapi",
     "dev": "cd dev-docker && docker-compose up -d && clear && docker exec -it dev-docker-api-1 bash",
     "dev-bash": "docker exec -it dev-docker-api-1 bash",
     "dev-down": "cd dev-docker && docker compose down && docker rmi hongikapi-dev-container",
-    "dev-run": "cross-env PORT=6000 nodemon www.js"
+    "dev-run": "npm uninstall bcrypt && npm i bcrypt && cross-env PORT=6000 nodemon www.js"
   },
   "repository": {
     "type": "git",

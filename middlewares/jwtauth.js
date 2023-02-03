@@ -122,7 +122,6 @@ exports.refreshTokenRegenrate = async (req, res, next) => {
                 issuer: process.env.JWT_ISSUER,
             },
         );
-        console.log(authToken);
         return res.status(Codes.OK.httpCode).json(
             Codes.messageWithToken(Codes.OK, authToken),
         );

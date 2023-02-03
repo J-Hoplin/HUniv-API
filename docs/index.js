@@ -18,8 +18,13 @@ const option = {
         },
         servers: [
             {
-                url: 'http://127.0.0.1:4000',
+                url: 'http://127.0.0.1:5500',
                 description: 'Dev Container localhost',
+            },
+        ],
+        security: [
+            {
+                bearerAuth: [],
             },
         ],
         components: {
@@ -125,12 +130,30 @@ const option = {
                         },
                     },
                 },
-                '400-user-password-unmatched': {
+                '401-user-password-unmatched': {
                     type: 'object',
                     properties: {
                         msg: {
                             type: 'string',
                             example: 'Password not matched',
+                        },
+                    },
+                },
+                '400-user-email-already-exist': {
+                    type: 'object',
+                    properties: {
+                        msg: {
+                            type: 'string',
+                            example: 'User email already exist',
+                        },
+                    },
+                },
+                '400-user-nickname-already-exist': {
+                    type: 'object',
+                    properties: {
+                        msg: {
+                            type: 'string',
+                            example: 'User nickname already exist',
                         },
                     },
                 },
@@ -149,6 +172,15 @@ const option = {
                         msg: {
                             type: 'string',
                             example: 'User not exist',
+                        },
+                    },
+                },
+                '400-fail-to-register-user': {
+                    type: 'object',
+                    properties: {
+                        msg: {
+                            type: 'string',
+                            example: 'Fail to register user',
                         },
                     },
                 },
@@ -207,6 +239,10 @@ const option = {
             {
                 name: '/api/v1/notice',
                 description: 'Notice API',
+            },
+            {
+                name: '/api/v1/auth',
+                description: 'Auth API',
             },
         ],
         paths: {
