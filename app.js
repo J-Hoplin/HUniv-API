@@ -8,7 +8,9 @@ dotenv.config({
 });
 
 // Scraper instance
-const { Notice, set } = require('./app/Notice');
+const { Notice, set: noticeSet } = require('./app/Notice');
+// Weather Hook Instance
+const { Weather, set: weatherSet } = require('./app/Weather');
 
 // Routers
 const api = require('./api');
@@ -30,9 +32,15 @@ sequelize.sync({ force: false })
 const app = express();
 
 // Initiate scraper instance
-Object.keys(set).map((i) => {
+Object.keys(noticeSet).map((i) => {
     console.log(`Instance of scraper : ${i} ready`);
     app.set(`scraper_${i}`, new Notice(i));
+    return i;
+});
+// Initalize weather api instance
+Object.keys(weatherSet).map((i) => {
+    console.log(`Weather instance ready : ${i}`);
+    app.set(`weather_${i}`, new Weather(weatherSet[i]));
     return i;
 });
 

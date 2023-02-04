@@ -244,6 +244,10 @@ const option = {
                 name: '/api/v1/auth',
                 description: 'Auth API',
             },
+            {
+                name: '/api/v1/weather',
+                description: 'Weather API',
+            },
         ],
         paths: {
             ...v1,
