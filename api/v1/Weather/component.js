@@ -1,4 +1,3 @@
-const Codes = require('../../../Code');
 const redis = require('../../../redis');
 const { UnsupportedRegion } = require('../../../Exceptions/api').v1.WeatherException;
 
