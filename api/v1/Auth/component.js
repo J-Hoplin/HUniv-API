@@ -48,6 +48,7 @@ exports.authJoin = async (req) => {
      */
     const {
         nickname,
+        role,
         email,
         password,
     } = req.body;
@@ -72,6 +73,7 @@ exports.authJoin = async (req) => {
         id,
         nickname,
         email,
+        role,
         password: hashedPassword,
     });
     return id;

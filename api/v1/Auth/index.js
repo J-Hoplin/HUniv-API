@@ -6,11 +6,14 @@ const {
     generateToken,
     refreshTokenPreprocess,
     refreshTokenRegenrate,
+    commonRateLimiter,
+    bodyValidate,
 } = require('../../../middlewares');
+const validator = require('../../../validator').Auth;
 
 const router = Router();
 
-router.post('/check-email', async (req, res, next) => {
+router.post('/check-email', commonRateLimiter, bodyValidate(validator.validateCheckEmail), async (req, res, next) => {
     try {
         await component.authCheckEmail(req);
         return res.send(Codes.OK.httpCode).json(Codes.messageCommon(Codes.OK));
@@ -19,7 +22,7 @@ router.post('/check-email', async (req, res, next) => {
     }
 });
 
-router.post('/check-nickname', async (req, res, next) => {
+router.post('/check-nickname', commonRateLimiter, bodyValidate(validator.validateCheckNickname), async (req, res, next) => {
     try {
         await component.authCheckNickname(req);
         return res.status(Codes.OK.httpCode).json(Codes.messageCommon(Codes.OK));
@@ -28,7 +31,7 @@ router.post('/check-nickname', async (req, res, next) => {
     }
 });
 
-router.post('/join', async (req, res, next) => {
+router.post('/join', commonRateLimiter, bodyValidate(validator.validateJoin), async (req, res, next) => {
     try {
         const id = await component.authJoin(req);
         return res.status(Codes.OK.httpCode).json(Codes.messageWithData(Codes.OK, { id }));
@@ -39,6 +42,8 @@ router.post('/join', async (req, res, next) => {
 
 router.post(
     '/login',
+    commonRateLimiter,
+    bodyValidate(validator.validateLogin),
     async (req, res, next) => {
         try {
             const id = await component.authLogin(req);
@@ -51,8 +56,8 @@ router.post(
     generateToken,
 );
 
-router.post('/refresh', refreshTokenPreprocess, refreshTokenRegenrate);
-router.post('/logout', verifyToken, async (req, res, next) => {
+router.post('/refresh', commonRateLimiter, refreshTokenPreprocess, refreshTokenRegenrate);
+router.post('/logout', commonRateLimiter, verifyToken, async (req, res, next) => {
     try {
         await component.logout(req);
         return res.status(Codes.OK.httpCode).json(
@@ -63,7 +68,7 @@ router.post('/logout', verifyToken, async (req, res, next) => {
     }
 });
 
-router.delete('/withdraw', verifyToken, async (req, res, next) => {
+router.delete('/withdraw', commonRateLimiter, verifyToken, bodyValidate(validator.validateWithdraw), async (req, res, next) => {
     try {
         await component.authWithdraw(req);
         return res.status(Codes.OK.httpCode).json(Codes.messageCommon(Codes.OK));

@@ -114,6 +114,10 @@ const authJoin = {
                                     type: 'string',
                                     example: 'email',
                                 },
+                                role: {
+                                    type: 'string',
+                                    enum: ['user', 'admin'],
+                                },
                                 password: {
                                     type: 'string',
                                     example: 'password',

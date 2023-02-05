@@ -31,6 +31,7 @@ exports.API_FORBIDDEN = format('Forbidden api', 403, 403);
 exports.API_BLOCKED = format('Blocked api', 403, 403);
 exports.API_DEPRECATED = format('API Deprecated', 410, 410);
 exports.API_UNAUTHORIZED = format('Unauthorized', 401, 401);
+exports.API_LIMIT_LOCK = format('API request limit per minute exceed', 429, 429);
 
 // token apiCode : 1000
 exports.JWT_EXPIRED = format('Token expired', 1000, 419);

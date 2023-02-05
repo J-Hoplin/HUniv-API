@@ -17,6 +17,10 @@ class User extends Sequelize.Model {
                 allowNull: false,
                 unique: true,
             },
+            role: {
+                type: Sequelize.ENUM(['admin', 'user']),
+                allowNull: false,
+            },
             password: {
                 type: Sequelize.STRING(100),
                 allowNull: false,

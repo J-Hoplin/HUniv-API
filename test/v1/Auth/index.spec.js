@@ -10,6 +10,7 @@ const Code = require('../../../Code');
 const mockUser1 = {
     nickname: 'mockuser1',
     password: 'mockpassword1',
+    role: 'user',
     email: 'mockemail1@mail.com',
 };
 const mockUser1Info = {
