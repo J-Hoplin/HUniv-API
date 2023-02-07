@@ -2,8 +2,7 @@ const { Router } = require('express');
 const component = require('./component');
 const {
   cacheHit,
-  verifyToken,
-  checkUserRole,
+  validateAPIKey,
   serviceRateLimiter,
   paramValidate,
   queryValidate,
@@ -14,12 +13,11 @@ const router = Router();
 
 router.get(
   '/:type',
-  verifyToken,
-  checkUserRole,
-  paramValidate(validator.validateInstanceType),
-  queryValidate(validator.validateNoticeByTypeList),
+  validateAPIKey,
   serviceRateLimiter,
   cacheHit,
+  paramValidate(validator.validateInstanceType),
+  queryValidate(validator.validateNoticeByTypeList),
   component.getTypeInstance,
   component.checkInstanceAvailable,
   component.getNoticeByTypeList,
@@ -27,11 +25,10 @@ router.get(
 
 router.get(
   '/:type/all',
-  verifyToken,
-  checkUserRole,
-  paramValidate(validator.validateInstanceType),
+  validateAPIKey,
   serviceRateLimiter,
   cacheHit,
+  paramValidate(validator.validateInstanceType),
   component.getTypeInstance,
   component.checkInstanceAvailable,
   component.getNoticeByTypeListAll,
@@ -39,12 +36,11 @@ router.get(
 
 router.get(
   '/:type/:number',
-  verifyToken,
-  checkUserRole,
-  paramValidate(validator.validateInstanceType),
-  paramValidate(validator.validateNoticeByTypeNumber),
+  validateAPIKey,
   serviceRateLimiter,
   cacheHit,
+  paramValidate(validator.validateInstanceType),
+  paramValidate(validator.validateNoticeByTypeNumber),
   component.getTypeInstance,
   component.checkInstanceAvailable,
   component.getNoticeByTypeNumber,

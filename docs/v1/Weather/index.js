@@ -12,6 +12,15 @@ const getWeatherInformation = {
                     enum: ['seoulcampus', 'sejongcampus'],
                 },
                 description: 'Get weather of campus',
+            }, {
+                in: 'header',
+                name: 'hkey',
+                required: true,
+                schema: {
+                    type: 'string',
+                },
+                example: 'cad4a46c-fd00-4beb-88d3-2d469af384f1',
+                description: 'API Key',
             }],
             responses: {
                 200: {

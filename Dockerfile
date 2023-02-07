@@ -11,7 +11,7 @@ WORKDIR /api
 COPY . .
 RUN rm -rf node_modules\
     && npm i
-EXPOSE 4000
+EXPOSE 4000 6500
 
-CMD [ "-c","npx sequelize db:create && node app.js" ]
+CMD [ "-c","npm run service-run" ]
 ENTRYPOINT [ "/bin/bash" ]

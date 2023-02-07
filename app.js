@@ -15,7 +15,10 @@ const { Weather, set: weatherSet } = require('./app/Weather');
 // Routers
 const api = require('./api');
 
+// Models
 const { sequelize } = require('./models');
+// Mongo
+const mongo = require('./mongo');
 
 // Swagger
 const { swaggerUI, specs } = require('./docs');
@@ -28,6 +31,7 @@ sequelize.sync({ force: false })
         console.error('Fail to connect database');
         process.exit(1);
     });
+mongo();
 
 const app = express();
 

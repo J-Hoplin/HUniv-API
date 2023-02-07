@@ -66,12 +66,16 @@ describe('Common middleware check', () => {
     });
 
     test('Request to example url. This will make cache data and save to redis', async () => {
+        const gettoken = await request(app)
+            .get('/api/v1/api-token/issue')
+            .set('Authorization', mockUser3Info.token);
+        const { token } = gettoken.body;
         const response = await request(app)
             .get(req.url)
-            .set('Authorization', mockUser3Info.token);
-        cache = response.body.data;
+            .set('hkey', token);
         expect(response.body.code).toEqual(Codes.OK.apiCode);
         expect(response.statusCode).toEqual(Codes.OK.httpCode);
+        cache = response.body.data;
     });
 
     test('Check if cache hit successful', async () => {

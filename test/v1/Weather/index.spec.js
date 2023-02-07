@@ -11,6 +11,7 @@ const mockUser3 = {
 const mockUser3Info = {
     id: '',
     token: '',
+    apiKey: '',
 };
 
 const TokenFormat = (token) => `Bearer ${token}`;
@@ -39,11 +40,21 @@ describe('Weather API test', () => {
         expect(response.status).toBe(Codes.OK.httpCode);
         expect(response.body.token).not.toBeUndefined();
     });
+
+    test('Issue new API Key', async () => {
+        const response = await request(app)
+            .get('/api/v1/api-token/issue')
+            .set('Authorization', mockUser3Info.token);
+        expect(response.status).toBe(Codes.OK.httpCode);
+        expect(response.body.token).not.toBeUndefined();
+        mockUser3Info.apiKey = response.body.token;
+    });
+
     test('1. Request about unsupported campus', async () => {
         const wrongtype = 'unsupported';
         const response = await request(app)
             .get(`/api/v1/weather/${wrongtype}`)
-            .set('Authorization', mockUser3Info.token);
+            .set('hkey', mockUser3Info.apiKey);
         expect(response.status).toBe(400);
         expect(response.body.code).toBe(1400);
     });
@@ -52,7 +63,7 @@ describe('Weather API test', () => {
         const supportedtype = 'sejongcampus';
         const response = await request(app)
             .get(`/api/v1/weather/${supportedtype}`)
-            .set('Authorization', mockUser3Info.token);
+            .set('hkey', mockUser3Info.apiKey);
         expect(response.status).toBe(Codes.OK.httpCode);
         expect(response.body.msg).toBe(Codes.OK.msg);
     });
