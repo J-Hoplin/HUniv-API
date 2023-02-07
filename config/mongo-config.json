@@ -1,0 +1,7 @@
+{
+    "host": "mongo",
+    "username": "root",
+    "password": "password1234!",
+    "port": 27017,
+    "db": "hongik"
+}

@@ -1,5 +1,5 @@
 const RateLimit = require('express-rate-limit');
-const Joi = require('joi');
+const qs = require('querystring');
 const redis = require('../redis');
 const Code = require('../Code');
 const { User } = require('../models');
@@ -50,7 +50,7 @@ exports.deprecated = async (req, res) => res.status(Code.API_DEPRECATED.httpCode
 // Rate limiter for normal APIs
 exports.commonRateLimiter = RateLimit({
     windowMs: 60 * 1000,
-    max: 30,
+    max: 60,
     handler: (req, res) => res
         .status(Code.API_LIMIT_LOCK.httpCode)
         .json(Code.messageCommon(Code.API_LIMIT_LOCK)),
@@ -65,5 +65,5 @@ exports.serviceRateLimiter = RateLimit({
     handler: (req, res) => res
         .status(Code.API_LIMIT_LOCK.httpCode)
         .json(Code.messageCommon(Code.API_LIMIT_LOCK)),
-    keyGenerator: (req, res) => req.headers.authorization.split(' ')[1],
+    keyGenerator: (req, res) => req.query.key,
 });

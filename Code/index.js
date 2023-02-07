@@ -46,3 +46,7 @@ exports.NOTICE_UNABLE_TO_FIND = format('Unable to find notice', 1101, 400);
 exports.USER_EMAIL_ALREADY_EXIST = format('User email already exist', 1200, 400);
 exports.USER_NICKNAME_ALREADY_EXIST = format('User nickname already exist', 1201, 400);
 exports.USER_NICKNAME_OR_EMAIL_ALREADY_EXIST = format('User nickname or email already exist', 1202, 400);
+
+// User Service Key
+exports.API_KEY_NEED_TO_BE_ISSUE = format('API Key need to be issue', 1501, 419);
+exports.API_KEY_ALREADY_ISSUED = format('Key already issued', 1502, 400);

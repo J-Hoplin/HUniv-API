@@ -28,6 +28,15 @@ const getNoticeByTypeList = {
                 },
                 example: 10,
                 description: 'limit(Default is 10)',
+            }, {
+                in: 'header',
+                name: 'hkey',
+                required: true,
+                schema: {
+                    type: 'string',
+                },
+                example: 'cad4a46c-fd00-4beb-88d3-2d469af384f1',
+                description: 'API Key',
             }],
             responses: {
                 200: {
@@ -78,6 +87,15 @@ const getNoticeByTypeNumber = {
                 },
                 example: 1000,
                 description: 'Notice number',
+            }, {
+                in: 'header',
+                name: 'hkey',
+                required: true,
+                schema: {
+                    type: 'string',
+                },
+                example: 'cad4a46c-fd00-4beb-88d3-2d469af384f1',
+                description: 'API Key',
             }],
             responses: {
                 200: {

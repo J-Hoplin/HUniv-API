@@ -3,6 +3,27 @@ const swaggerUI = require('swagger-ui-express');
 
 const v1 = require('./v1');
 
+const getCheckAPIHealth = {
+    '/api/health': {
+        get: {
+            summary: 'Check API health status',
+            tags: ['/api'],
+            responses: {
+                200: {
+                    description: 'OK',
+                    content: {
+                        'application/json': {
+                            schema: {
+                                $ref: '#/components/schemas/200',
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    },
+};
+
 const option = {
     definition: {
         openapi: '3.0.0',
@@ -17,6 +38,10 @@ const option = {
             },
         },
         servers: [
+            {
+                url: 'http://127.0.0.1:6500',
+                description: 'Production Container localhost',
+            },
             {
                 url: 'http://127.0.0.1:5500',
                 description: 'Dev Container localhost',
@@ -39,6 +64,10 @@ const option = {
                 200: {
                     type: 'object',
                     properties: {
+                        code: {
+                            type: 'integer',
+                            example: 200,
+                        },
                         msg: {
                             type: 'string',
                             example: 'OK',
@@ -93,6 +122,10 @@ const option = {
                 '200-with-token': {
                     type: 'object',
                     properties: {
+                        code: {
+                            type: 'integer',
+                            example: 200,
+                        },
                         msg: {
                             type: 'string',
                             example: 'OK',
@@ -106,6 +139,10 @@ const option = {
                 '200-true': {
                     type: 'object',
                     properties: {
+                        code: {
+                            type: 'integer',
+                            example: 200,
+                        },
                         msg: {
                             type: 'boolean',
                             example: true,
@@ -115,6 +152,10 @@ const option = {
                 '200-false': {
                     type: 'object',
                     properties: {
+                        code: {
+                            type: 'integer',
+                            example: 200,
+                        },
                         msg: {
                             type: 'boolean',
                             example: false,
@@ -124,6 +165,10 @@ const option = {
                 '400-invalid-notice-number': {
                     type: 'object',
                     properties: {
+                        code: {
+                            type: 'integer',
+                            example: 400,
+                        },
                         msg: {
                             type: 'string',
                             example: 'Invalid notice number {value}',
@@ -133,6 +178,10 @@ const option = {
                 '401-user-password-unmatched': {
                     type: 'object',
                     properties: {
+                        code: {
+                            type: 'integer',
+                            example: 1203,
+                        },
                         msg: {
                             type: 'string',
                             example: 'Password not matched',
@@ -142,15 +191,49 @@ const option = {
                 '400-user-email-already-exist': {
                     type: 'object',
                     properties: {
+                        code: {
+                            type: 'integer',
+                            example: 1200,
+                        },
                         msg: {
                             type: 'string',
                             example: 'User email already exist',
                         },
                     },
                 },
+                '400-key-already-issued': {
+                    type: 'object',
+                    properties: {
+                        code: {
+                            type: 'integer',
+                            example: 1502,
+                        },
+                        msg: {
+                            type: 'string',
+                            example: 'Key already issued',
+                        },
+                    },
+                },
+                '400-key-not-issued': {
+                    type: 'object',
+                    properties: {
+                        code: {
+                            type: 'integer',
+                            example: 1503,
+                        },
+                        msg: {
+                            type: 'string',
+                            example: 'Key not issued yet',
+                        },
+                    },
+                },
                 '400-user-nickname-already-exist': {
                     type: 'object',
                     properties: {
+                        code: {
+                            type: 'integer',
+                            example: 1201,
+                        },
                         msg: {
                             type: 'string',
                             example: 'User nickname already exist',
@@ -160,6 +243,10 @@ const option = {
                 '400-user-already-exist': {
                     type: 'object',
                     properties: {
+                        code: {
+                            type: 'integer',
+                            example: 1202,
+                        },
                         msg: {
                             type: 'string',
                             example: 'User email or nickname already exist',
@@ -178,6 +265,10 @@ const option = {
                 '400-fail-to-register-user': {
                     type: 'object',
                     properties: {
+                        code: {
+                            type: 'integer',
+                            example: 1202,
+                        },
                         msg: {
                             type: 'string',
                             example: 'Fail to register user',
@@ -248,8 +339,17 @@ const option = {
                 name: '/api/v1/weather',
                 description: 'Weather API',
             },
+            {
+                name: '/api/v1/user',
+                description: 'User API',
+            },
+            {
+                name: '/api/v1/api-token',
+                description: 'API Token',
+            },
         ],
         paths: {
+            ...getCheckAPIHealth,
             ...v1,
         },
     },

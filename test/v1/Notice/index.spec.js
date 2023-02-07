@@ -11,6 +11,7 @@ const mockUser2 = {
 const mockUser2Info = {
     id: '',
     token: '',
+    apiKey: '',
 };
 
 const TokenFormat = (token) => `Bearer ${token}`;
@@ -36,22 +37,31 @@ describe('Notice API check', () => {
             .set('Accept', 'application/json')
             .type('application/json')
             .send(mockUser2);
-        mockUser2Info.token = TokenFormat(response.body.token);
         expect(response.status).toBe(Code.OK.httpCode);
         expect(response.body.token).not.toBeUndefined();
+        mockUser2Info.token = TokenFormat(response.body.token);
+    });
+
+    test('Issue new API Key', async () => {
+        const response = await request(app)
+            .get('/api/v1/api-token/issue')
+            .set('Authorization', mockUser2Info.token);
+        expect(response.status).toBe(Code.OK.httpCode);
+        expect(response.body.token).not.toBeUndefined();
+        mockUser2Info.apiKey = response.body.token;
     });
 
     test('Test /api/v1/notice/{type} normal request', async () => {
         const response = await request(app)
             .get('/api/v1/notice/normal')
-            .set('Authorization', mockUser2Info.token);
+            .set('hkey', mockUser2Info.apiKey);
         expect(response.body.code).toEqual(Code.OK.apiCode);
         expect(response.statusCode).toEqual(Code.OK.httpCode);
     });
     test('Test /api/v1/notice/{type} abnormal request', async () => {
         const response = await request(app)
             .get('/api/v1/notice/abnormal')
-            .set('Authorization', mockUser2Info.token);
+            .set('hkey', mockUser2Info.apiKey);
         // Joi validation Error
         expect(response.body.code).toEqual(1400);
         expect(response.status).toBe(400);
@@ -59,14 +69,14 @@ describe('Notice API check', () => {
     test('Test /api/v1/notice/{type}/{number} normal request', async () => {
         const response = await request(app)
             .get('/api/v1/notice/normal/1000')
-            .set('Authorization', mockUser2Info.token);
+            .set('hkey', mockUser2Info.apiKey);
         expect(response.body.code).toEqual(Code.OK.apiCode);
         expect(response.statusCode).toEqual(Code.OK.httpCode);
     });
     test('Test /api/v1/notice/{type}/{number} abnormal request', async () => {
         const response = await request(app)
             .get('/api/v1/notice/normal/100000')
-            .set('Authorization', mockUser2Info.token);
+            .set('hkey', mockUser2Info.apiKey);
         expect(response.body.code).toEqual(Code.NOTICE_UNABLE_TO_FIND.apiCode);
         expect(response.statusCode).toEqual(Code.NOTICE_UNABLE_TO_FIND.httpCode);
     });

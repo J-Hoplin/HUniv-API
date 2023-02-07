@@ -8,7 +8,10 @@ const {
     UserNicknameAlreadyExist,
     UserRegisterFailed,
     PasswordUnmatched,
+    UnregisteredUser,
+    UserNotFound,
 } = require('../../../Exceptions').api.v1.AuthException;
+const { APIKey } = require('../../../mongo/schema');
 
 exports.authCheckEmail = async (req) => {
     const {
@@ -89,6 +92,9 @@ exports.authLogin = async (req) => {
             nickname,
         },
     });
+    if (!user) {
+        throw new UnregisteredUser(nickname);
+    }
     // Compare password
     if (!await bcrypt.compare(password, user.password)) {
         throw new PasswordUnmatched();
@@ -117,6 +123,9 @@ exports.authWithdraw = async (req) => {
             id,
         },
     });
+    if (!user) {
+        throw new UserNotFound(id);
+    }
     if (!await bcrypt.compare(password, user.password)) {
         throw new PasswordUnmatched();
     }
@@ -126,6 +135,10 @@ exports.authWithdraw = async (req) => {
             id,
         },
     });
+    // Delete user's api key
+    if (await APIKey.findOne({ userid: id })) {
+        await APIKey.deleteOne({ userid: id });
+    }
     // destroy refresh token of user
     await redis.del(id);
     return true;

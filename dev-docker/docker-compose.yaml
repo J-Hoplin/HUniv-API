@@ -12,6 +12,7 @@ services:
     depends_on:
       - db
       - redis
+      - mongo
     networks:
       - api-network
     tty: true
@@ -27,6 +28,19 @@ services:
       - api-network
     volumes:
       - hongik-api-volume:/var/lib/mysql
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    restart: "unless-stopped"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password1234!
+      - MONGO_INITDB_DATABASE=hongik
+    networks:
+      - api-network
+    volumes:
+      - hongik-api-mongo:/data/db
   redis:
     image: arm64v8/redis
     restart: "unless-stopped"
@@ -39,3 +53,4 @@ networks:
     driver: bridge
 volumes:
   hongik-api-volume:
+  hongik-api-mongo:
