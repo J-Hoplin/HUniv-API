@@ -11,5 +11,5 @@ WORKDIR /api
 VOLUME [ "/api" ]
 EXPOSE 4000 6000
 
-CMD [ "-c","npm run dev-run" ]
+CMD [ "-c","npm run dev:run" ]
 ENTRYPOINT [ "/bin/bash" ]

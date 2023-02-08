@@ -13,5 +13,5 @@ RUN rm -rf node_modules\
     && npm i
 EXPOSE 4000 6500
 
-CMD [ "-c","npm run service-run" ]
+CMD [ "-c","npm run service:run" ]
 ENTRYPOINT [ "/bin/bash" ]

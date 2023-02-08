@@ -61,7 +61,7 @@ exports.commonRateLimiter = RateLimit({
 // This limiter require to be after verifyToken middleware
 exports.serviceRateLimiter = RateLimit({
     windowMs: 60 * 1000,
-    max: (req, res) => (req.userRole === 'admin' ? 100 : 30),
+    max: (req, res) => (req.userRole === 'admin' ? 300 : 70),
     handler: (req, res) => res
         .status(Code.API_LIMIT_LOCK.httpCode)
         .json(Code.messageCommon(Code.API_LIMIT_LOCK)),
