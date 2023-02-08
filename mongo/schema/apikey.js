@@ -15,7 +15,7 @@ const apikeySchema = new Schema({
     },
     expireAt: {
         type: Date,
-        expires: '90d',
+        expires: `${process.env.API_KEY_EXPIRE}d`,
         default: Date.now(),
     },
 });
