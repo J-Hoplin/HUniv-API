@@ -9,7 +9,7 @@
     "service:bash": "docker exec -it huniv-api-api-1 bash",
     "service:down": "docker compose down && docker rmi hongikapi",
     "service:run": "npx sequelize db:create && cross-env PORT=6500 node www.js",
-    "dev": "cd dev-docker && docker-compose up -d && clear && docker exec -it dev-docker-api-1 bash",
+    "dev": "npm i && cd dev-docker && docker-compose up -d && clear && docker exec -it dev-docker-api-1 bash",
     "dev:bash": "docker exec -it dev-docker-api-1 bash",
     "dev:down": "cd dev-docker && docker compose down && docker rmi hongikapi-dev-container",
     "dev:run": "npx sequelize db:create && npm uninstall bcrypt && npm i bcrypt && cross-env PORT=6000 nodemon www.js"
